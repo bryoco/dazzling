@@ -36,11 +36,11 @@ func BeginSession(signingKey string, store Store, sessionState State, w http.Res
 func GetSessionID(r *http.Request, signingKey string) (SID, error) {
 
 	// get the value of the Authorization header,
-	id := r.Header.Get(paramAuthorization)
+	id := r.Header.Get(headerAuthorization)
 
 	// or the "auth" query string parameter if no Authorization header is present,
 	if len(id) == 0 {
-		id = r.URL.Query().Get("auth")
+		id = r.URL.Query().Get(paramAuthorization)
 	}
 
 	s := strings.Split(id, " ")
