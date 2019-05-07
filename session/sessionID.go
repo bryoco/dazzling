@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 )
 
 // signedLength is the full length of the signed session ID
@@ -43,7 +44,7 @@ func NewSessionID(signingKey string) (SID, error) {
 	// if `signingKey` is zero-length, return InvalidSessionID
 	// and an error indicating that it may not be empty
 	if len(signingKey) == 0 {
-		return InvalidSessionID, ErrInvalidID
+		return InvalidSessionID, errors.New("not signing key")
 	}
 
 	// Generate a new digitally-signed SID by doing the following:
@@ -114,13 +115,13 @@ func ValidateID(id string, signingKey string) (SID, error) {
 	// return the entire `id` parameter as a SID type.
 	// If not, return InvalidSessionID and ErrInvalidID.
 
-	if !IdHasMutated(id) {
-		return InvalidSessionID, ErrInvalidID
-	}
+	//if !IdHasMutated(id) {
+	//	return InvalidSessionID, errors.New("id has mutated")
+	//}
 
 	decodedID, err := DecodeSessionID(id)
 	if err != nil {
-		return InvalidSessionID, ErrInvalidID
+		return InvalidSessionID, err
 	}
 
 	// ID portion of the byte slice
@@ -130,6 +131,6 @@ func ValidateID(id string, signingKey string) (SID, error) {
 	if match {
 		return SID(id), nil
 	} else {
-		return InvalidSessionID, ErrInvalidID
+		return InvalidSessionID, errors.New("hmac not equal")
 	}
 }

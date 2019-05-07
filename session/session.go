@@ -58,7 +58,7 @@ func GetSessionID(r *http.Request, signingKey string) (SID, error) {
 		id = s[len(s)-1]
 		sid, err := ValidateID(id, signingKey)
 		if err != nil {
-			return InvalidSessionID, ErrInvalidID
+			return InvalidSessionID, err
 		} else {
 			return sid, nil
 		}
