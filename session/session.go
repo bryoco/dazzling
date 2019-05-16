@@ -71,7 +71,7 @@ func GetSessionID(r *http.Request, signingKey string) (SID, error) {
 // GetState extracts the SessionID from the request,
 // gets the associated state from the provided store into
 // the `sessionState` parameter, and returns the SessionID
-func GetState(r *http.Request, signingKey string, store Store, sessionState interface{}) (SID, error) {
+func GetState(r *http.Request, signingKey string, store RedisStore, sessionState interface{}) (SID, error) {
 	// get the SessionID from the request, and get the data
 	// associated with that SessionID from the store.
 	sid, err := GetSessionID(r, signingKey)
